@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>924</width>
+    <height>77</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1024000</width>
+    <height>60000</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 0, 0);</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QPushButton" name="buttonBarrelCorrection">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <activeoff>New folder/image222.png</activeoff>
+       <activeon>New folder/image333.png</activeon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonZeroPoint">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/circular-target.png</normaloff>New folder/circular-target.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="button3D">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/camera(1).png</normaloff>New folder/camera(1).png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonLocalStream">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/p2p_01.png</normaloff>New folder/p2p_01.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonTestStream">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/live-streaming (3).png</normaloff>New folder/live-streaming (3).png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonStream">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/live11.png</normaloff>New folder/live11.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonRecord">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/rec (4).png</normaloff>
+       <normalon>New folder/rec (4).png</normalon>New folder/rec (4).png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonGallery">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/video-player.png</normaloff>New folder/video-player.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonSettingsMainWindow">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/settings (2).png</normaloff>New folder/settings (2).png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttoncloseMainWindow">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton:checked{
+border: 2px;
+color: #009FE3;
+font-size: 14px;
+border-radius: 2px;
+border-style: outset;
+border-width: 2px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:!checked{
+
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}
+QPushButton:!pressed{
+
+color: white;
+	background-color: rgb(46, 52, 54);
+border-radius: 5px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>New folder/power-button_nwe.png</normaloff>New folder/power-button_nwe.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

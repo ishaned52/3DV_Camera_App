@@ -1,0 +1,235 @@
+P1:
+  NAME: "HOME"
+  M1:
+    STEPS: 2000
+    DIRECTION: 0
+
+  M2:
+    STEPS: 1000
+    DIRECTION: 0
+
+  M3:
+    STEPS: 700
+    DIRECTION: 1
+
+  M4:
+    STEPS: 700
+    DIRECTION: 0
+
+  M5:
+    STEPS: 1000
+    DIRECTION: 1
+
+  M6:
+    STEPS: 2000
+    DIRECTION: 1
+
+P2:
+
+  M1:
+    STEPS: 0
+    DIRECTION: 1
+
+  M2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 91
+    DIRECTION: 0
+
+  M4:
+    STEPS: 91
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 0
+    DIRECTION: 0
+    
+P3:
+
+  M1:
+    STEPS: 0
+    DIRECTION: 1
+
+  M2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 75
+    DIRECTION: 0
+
+  M4:
+    STEPS: 75
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 0
+    DIRECTION: 0
+
+P4:
+
+  M1:
+    STEPS: 0
+    DIRECTION: 0
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 68
+    DIRECTION: 0
+
+  M4:
+    STEPS: 68
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 0
+    DIRECTION: 1
+    
+P5:
+
+  M1:
+    STEPS: 165
+    DIRECTION: 1
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 100
+    DIRECTION: 0
+
+  M4:
+    STEPS: 100
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 165
+    DIRECTION: 0
+    
+P6:
+
+  M1:
+    STEPS: 165
+    DIRECTION: 1
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 84
+    DIRECTION: 0
+
+  M4:
+    STEPS: 84
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 165
+    DIRECTION: 0
+    
+P7:
+
+  M1:
+    STEPS: 165
+    DIRECTION: 1
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 74
+    DIRECTION: 0
+
+  M4:
+    STEPS: 74
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 165
+    DIRECTION: 0
+
+P8:
+
+  M1:
+    STEPS: 450
+    DIRECTION: 1
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 85
+    DIRECTION: 0
+
+  M4:
+    STEPS: 85
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 450
+    DIRECTION: 0
+
+P9:
+
+  M1:
+    STEPS: 450
+    DIRECTION: 1
+
+  eM2:
+    STEPS: 0
+    DIRECTION: 0
+
+  M3:
+    STEPS: 139
+    DIRECTION: 0
+
+  M4:
+    STEPS: 139
+    DIRECTION: 1
+
+  M5:
+    STEPS: 0
+    DIRECTION: 0
+
+  M6:
+    STEPS: 450
+    DIRECTION: 0
+
+

@@ -1,0 +1,10 @@
+APPLICATION_SERVER_URL: https://api.gioview.tv/api/v1
+BAUD_RATE: 9600
+ENABLE_CLOSE_APP_BUTTON: true
+NVME_MOUNT_POINT: /media/giocam3d/GIOVIEW/
+NVME_PATH: /dev/nvme0n1p1
+PORT: /dev/ttyTHS0
+POWER_MODE: 8
+SINGLE_CAM_OPERATION: false
+password: giocam3d
+username: giocam3d

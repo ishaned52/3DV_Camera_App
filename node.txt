@@ -1,0 +1,15 @@
+GST_ARGUS: Setup Complete, Starting captures for 0 seconds
+GST_ARGUS: Starting repeat capture requests.
+CONSUMER: Producer has connected; continuing.
+CONSUMER: Producer has connected; continuing.
+working
+gst-resource-error-quark: Could not open resource for writing. (6) gstrtmpsink.c(293): gst_rtmp_sink_render (): /GstPipeline:pipeline1/GstRTMPSink:rtmpsink0:
+Could not connect to RTMP stream "rtmp://13.42.150.162:1935/single/live" for writing
+GST_ARGUS: Cleaning up
+CONSUMER: Done Success
+GST_ARGUS: Done Success
+GST_ARGUS: Cleaning up
+CONSUMER: Done Success
+GST_ARGUS: Done Success
+
+
