@@ -19,20 +19,20 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="5" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
+     <item row="4" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLabel" name="label_10">
+        <widget class="QLabel" name="label_3">
          <property name="styleSheet">
           <string notr="true">color: rgb(238, 238, 236);</string>
          </property>
          <property name="text">
-          <string>TNR Mode</string>
+          <string>Edge Enhance Mode</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="tnrModeComboBox">
+        <widget class="QComboBox" name="edgeEnhanceMode_comboBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -62,20 +62,20 @@ background-color: rgb(211, 215, 207);</string>
        </item>
       </layout>
      </item>
-     <item row="4" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item row="5" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_10">
          <property name="styleSheet">
           <string notr="true">color: rgb(238, 238, 236);</string>
          </property>
          <property name="text">
-          <string>Edge Enhance Mode</string>
+          <string>TNR Mode</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="edgeEnhanceMode_comboBox">
+        <widget class="QComboBox" name="tnrModeComboBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -156,6 +156,194 @@ background-color: rgb(211, 215, 207);</string>
        </item>
       </layout>
      </item>
+     <item row="9" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236);</string>
+         </property>
+         <property name="text">
+          <string>Saturation</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxSaturation">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(238, 238, 236);</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_14">
+           <item>
+            <widget class="QPushButton" name="buttonSaturationUp">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(211, 215, 207);</string>
+             </property>
+             <property name="text">
+              <string>+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonSaturationDown">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(211, 215, 207);</string>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236);</string>
+         </property>
+         <property name="text">
+          <string>AE Antibanding Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="aeantiBanding_comboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(211, 215, 207);</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Off</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Auto</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>50Hz</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>60Hz</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="8" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236);</string>
+         </property>
+         <property name="text">
+          <string>Exposure compensation</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxExposure">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(238, 238, 236);</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QPushButton" name="buttonExposureUp">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(211, 215, 207);</string>
+             </property>
+             <property name="text">
+              <string>+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonExposureDown">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(211, 215, 207);</string>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
      <item row="6" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
@@ -190,6 +378,56 @@ background-color: rgb(211, 215, 207);</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236);</string>
+         </property>
+         <property name="text">
+          <string>AWB Lock</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="AwbLock_checkBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 215, 207);</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="11" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <item>
+        <widget class="QPushButton" name="button_camera_default">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236);</string>
+         </property>
+         <property name="text">
+          <string>Load Defaults</string>
          </property>
         </widget>
        </item>
@@ -274,240 +512,29 @@ background-color: rgb(211, 215, 207);</string>
       </layout>
      </item>
      <item row="10" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_10">
+      <layout class="QHBoxLayout" name="horizontalLayout_12">
        <item>
-        <widget class="QPushButton" name="button_camera_default">
+        <widget class="QLabel" name="label_9">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Audio Input Device</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditAudioIn">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgb(238, 238, 236);</string>
-         </property>
-         <property name="text">
-          <string>Load Defaults</string>
+          <string notr="true">color: rgb(255, 255, 255);</string>
          </property>
         </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="3" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(238, 238, 236);</string>
-         </property>
-         <property name="text">
-          <string>AE Antibanding Mode</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="aeantiBanding_comboBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(211, 215, 207);</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Off</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Auto</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>50Hz</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>60Hz</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="9" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_9">
-       <item>
-        <widget class="QLabel" name="label_6">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(238, 238, 236);</string>
-         </property>
-         <property name="text">
-          <string>Saturation</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_13">
-         <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBoxSaturation">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(238, 238, 236);</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_14">
-           <item>
-            <widget class="QPushButton" name="buttonSaturationUp">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(211, 215, 207);</string>
-             </property>
-             <property name="text">
-              <string>+</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSaturationDown">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(211, 215, 207);</string>
-             </property>
-             <property name="text">
-              <string>-</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(238, 238, 236);</string>
-         </property>
-         <property name="text">
-          <string>AWB Lock</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="AwbLock_checkBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(211, 215, 207);</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="8" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_7">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgb(238, 238, 236);</string>
-         </property>
-         <property name="text">
-          <string>Exposure compensation</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBoxExposure">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(238, 238, 236);</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QPushButton" name="buttonExposureUp">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(211, 215, 207);</string>
-             </property>
-             <property name="text">
-              <string>+</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonExposureDown">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(211, 215, 207);</string>
-             </property>
-             <property name="text">
-              <string>-</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
        </item>
       </layout>
      </item>

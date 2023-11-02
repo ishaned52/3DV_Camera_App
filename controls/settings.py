@@ -333,12 +333,29 @@ class System():
                 if 'NVME_PATH' in self.config:
                     self.NVME_PATH = self.config['NVME_PATH']
 
+                if 'SNAPSTART' in self.config:
+                    self.SNAPSTART = self.config['SNAPSTART']
+
                 stream.close()
 
             except yaml.YAMLError as exc:
                 print(exc)
   
 
+
+    # def save(self):
+    #     with open(self.camera_file, "r+") as stream:
+    #         try:
+    #             self.config['SNAPSTART']             = self.SNAPSTART
+
+    #             stream.seek(0)
+    #             stream.truncate()
+
+    #             yaml.dump(self.config, stream=stream, default_flow_style=False, allow_unicode=True)
+    #             stream.close()
+    #         except yaml.YAMLError as exc:
+    #             print(exc)
+                
 
 
 
@@ -474,6 +491,8 @@ class UI():
                 if 'BACKGROUNG_IMAGE' in self.config:
                     self.BACKGROUNG_IMAGE = self.config['BACKGROUNG_IMAGE']
 
+                if 'DEVICE_SETTINGS_WINDOW_SIZE' in self.config:
+                    self.DEVICE_SETTINGS_WINDOW_SIZE = self.config['DEVICE_SETTINGS_WINDOW_SIZE']
 
                 stream.close()
 
@@ -512,7 +531,7 @@ class UI():
                 self.config['AI_WINDOW_SIZE_X']             = self.AI_WINDOW_SIZE_X
                 self.config['MEDIA_WINDOW_SIZE']            = self.MEDIA_WINDOW_SIZE
                 self.config['STREAM_TEST_WINDOW_SIZE']      = self.STREAM_TEST_WINDOW_SIZE
-
+                self.config['DEVICE_SETTINGS_WINDOW_SIZE']  = self.DEVICE_SETTINGS_WINDOW_SIZE
     
 
                 stream.seek(0)
@@ -681,7 +700,82 @@ class AISettings():
 
 
 
+class StreamSettings():
 
+    FPS_4K=30
+
+    file = "config/stream.yaml"
+
+    def __init__(self) -> None:
+        
+        # self.file = dirname(dirname(abspath(__file__))) + "/cameraSettings.yaml"
+        self.file = dirname(dirname(dirname(abspath(__file__)))) + "/config/stream.yaml" if exists(dirname(dirname(dirname(abspath(__file__)))) + "/config/stream.yaml") else dirname(dirname(abspath(__file__))) + "/config/stream.yaml"
+    #     
+        self.load()
+        pass
+
+    def load(self):
+        
+        with open(self.file, "r+") as stream:
+            try:
+                self.config = yaml.safe_load(stream)
+
+                if 'FPS_4K' in self.config:
+                    self.FPS_4K = self.config['FPS_4K']
+
+                if 'FPS_FHD' in self.config:
+                    self.FPS_FHD = self.config['FPS_FHD']
+                
+
+            except yaml.YAMLError as exc:
+                print(exc)
+    
+
+
+
+
+
+class AudioSettings():
+
+
+    file = "config/audio.yaml"
+
+    def __init__(self) -> None:
+        
+        # self.file = dirname(dirname(abspath(__file__))) + "/cameraSettings.yaml"
+        self.file = dirname(dirname(dirname(abspath(__file__)))) + "/config/audio.yaml" if exists(dirname(dirname(dirname(abspath(__file__)))) + "/config/audio.yaml") else dirname(dirname(abspath(__file__))) + "/config/audio.yaml"
+    #     
+        self.load()
+        pass
+
+    def load(self):
+        
+        with open(self.file, "r+") as stream:
+            try:
+                self.config = yaml.safe_load(stream)
+
+                if 'AUDIO_INPUT_DEVICE' in self.config:
+                    self.AUDIO_INPUT_DEVICE = self.config['AUDIO_INPUT_DEVICE']
+
+                if 'SYSTEM_AUDIO_INPUT' in self.config:
+                    self.SYSTEM_AUDIO_INPUT = self.config['SYSTEM_AUDIO_INPUT']
+
+
+            except yaml.YAMLError as exc:
+                print(exc)
+    
+    # def save(self):
+    #     with open(self.system_file, "r+") as stream:
+    #         try:
+    #             self.config['ICON_SIZE']             = self.ICON_SIZE
+
+    #             stream.seek(0)
+    #             stream.truncate()
+
+    #             yaml.dump(self.config, stream=stream, default_flow_style=False, allow_unicode=True)
+    #             stream.close()
+    #         except yaml.YAMLError as exc:
+    #             print(exc)
 
 
 

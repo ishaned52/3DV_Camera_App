@@ -8,3 +8,4 @@ POWER_MODE: 8
 SINGLE_CAM_OPERATION: false
 password: giocam3d
 username: giocam3d
+SNAPSTART: true

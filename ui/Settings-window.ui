@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>310</width>
-    <height>314</height>
+    <width>372</width>
+    <height>357</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -248,7 +248,7 @@ border-radius: 5px;
           <string notr="true">color: rgb(238, 238, 236);</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Device Settings</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -348,15 +348,37 @@ border-radius: 5px;
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="buttonDeviceSettings">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="styleSheet">
+          <string notr="true">
+QPushButton:!pressed{
+color: white;
+background-color: rgb(46, 52, 54);
+border-radius: 2px;
+
+border-width: 1px;
+border-radius: 10px;
+border-color: beige;
+}
+QPushButton:pressed{
+
+color: white;
+background-color: rgb(225, 237, 237);
+border-radius: 5px;
+}</string>
+         </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>New folder/device_settings.png</normaloff>New folder/device_settings.png</iconset>
          </property>
          <property name="iconSize">
           <size>

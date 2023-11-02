@@ -146,6 +146,9 @@ form_25, base_25 = uic.loadUiType(uifile_25)
 uifile_26 = 'ui/streamTest-window.ui'
 form_26, base_26 = uic.loadUiType(uifile_26)
 
+uifile_27 = 'ui/device_settings_window.ui'
+form_27, base_27 = uic.loadUiType(uifile_27)
+
 
 # read base directory
 # basedir = os.path.dirname(__file__)
@@ -164,6 +167,7 @@ class MainWindow(base_1, form_1):
         self.sys = systemConfig
         self.cam = systemCamera
         self.ui = systemUI
+        self.audio = audioConfig
     
         self.mainWindowHeight = self.ui.MAIN_WINDOW_SIZE_Y
         self.resize((screen_width),self.mainWindowHeight)
@@ -226,15 +230,16 @@ class MainWindow(base_1, form_1):
         self.mountExternalDrive()
         self.desableButtons()
 
-        self.OpenSBSPreviewAtStartup()
+        if self.sys.SNAPSTART==True:
 
-        
+            self.OpenSBSPreviewAtStartup()
 
-        time.sleep(5)
+            time.sleep(5)
 
         self.setEnabled(True)
-
-        
+        self.changeSystemMicInput()
+        # nvgstcapture-1.0 --image-res=8 --file-name=/home/giocam3d/captured_image -m 1 --capture-auto
+#
 
 
     def OpenSBSPreviewAtStartup(self): # delay 0.5 seconds . otherwise error occure
@@ -519,6 +524,19 @@ class MainWindow(base_1, form_1):
         self.blackWindow.show()
 
 
+    def changeSystemMicInput(self):
+
+        # pactl list short sources                     command to list
+        source_name = self.audio.SYSTEM_AUDIO_INPUT
+
+        try:
+            # Runs the command to set the default source by name
+            subprocess.run(['pactl', 'set-default-source', source_name], check=True)
+            print(f"Default source set to: {source_name}")
+        except subprocess.CalledProcessError as e:
+            # This will catch any errors that the pactl command returns
+            print(f"An error occurred: {e}")
+
 
 
 class StreamTest(base_26, form_26):
@@ -538,7 +556,7 @@ class StreamTest(base_26, form_26):
 
         self.resizeWindow()
 
-
+# 869853024695076
     def resizeWindow(self):
 
         size = self.ui.STREAM_TEST_WINDOW_SIZE
@@ -1654,8 +1672,6 @@ class Select3DPreview(base_21, form_21):
 
         self.closeButton_previewWindow.setIconSize(ICON_SIZE*0.8)
 
-
-  
 
     def startLeftCam(self):
 
@@ -2983,6 +2999,7 @@ class SettingsPage(base_9, form_9):
         # self.setAttribute(Qt.WA_TranslucentBackground)
         self.buttonExit.clicked.connect(self.closeEvent)
         self.buttonPresets.clicked.connect(self.openPresetsWindow)
+        self.buttonDeviceSettings.clicked.connect(self.openDevSettingsWindow)
 
         # self.buttonServoControls.setIconSize(ICON_SIZE*1.5)
         # self.buttonStreamKey.setIconSize(ICON_SIZE*1.5)
@@ -2997,6 +3014,7 @@ class SettingsPage(base_9, form_9):
         self.buttonSettings.setIconSize(ICON_SIZE)
         self.buttonExit.setIconSize(ICON_SIZE*0.8)
         self.buttonPresets.setIconSize(ICON_SIZE)
+        self.buttonDeviceSettings.setIconSize(ICON_SIZE)
 
 
     def openPresetsWindow(self):
@@ -3087,6 +3105,104 @@ class SettingsPage(base_9, form_9):
         self.windowServer.resize(int(screen_width/3),int(screen_height/4))
         self.windowServer.show()
 
+
+
+    def openDevSettingsWindow(self):
+
+        self.windowDeviceSettings = DeviceSettingsPage()
+        self.windowDeviceSettings.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowStaysOnTopHint)
+        self.windowDeviceSettings.setWindowFlags(self.windowDeviceSettings.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.windowDeviceSettings.setWindowTitle(' Device Settings ')
+        self.close()
+        self.windowDeviceSettings.show()
+
+
+
+class DeviceSettingsPage(base_27, form_27):
+
+    def __init__(self):
+        super(base_27, self).__init__()
+        # Initialize ui and yaml files----------------------
+        self.setupUi(self)
+        self.sys = systemConfig
+        # self.vid = systemCamera
+        self.ui = systemUI
+        #---------------------------------------------------
+
+        # Define Button actions--------
+        self.pushButtonExitDeviceSettings.clicked.connect(self.exitAction)
+        self.radioButtonSnapOn.clicked.connect(self.radioButtonClickedOn)
+        self.radioButtonSnapOff.clicked.connect(self.radioButtonClickedOff)
+        # ------------------------------
+
+        # Enter calling functions here
+        self.resizeWindow()
+        self.listAudioDevice()
+        self.checkSnapStartState()
+
+    def radioButtonClickedOn(self):
+
+        self.sys.SNAPSTART = True
+        self.sys.save()
+
+    def radioButtonClickedOff(self):
+
+        self.sys.SNAPSTART = False
+        self.sys.save()
+
+    def checkSnapStartState(self):
+
+        if self.sys.SNAPSTART==True:
+            self.radioButtonSnapOn.setChecked(True)
+
+
+    def exitAction(self):
+        self.close()
+        pass
+
+    def resizeWindow(self):
+
+        size = self.ui.DEVICE_SETTINGS_WINDOW_SIZE
+        w,h = size.split(',')
+        self.resize(int(w),int(h))
+
+    def resizeEvent(self, event):
+
+        size = self.size()
+        x = size.width()
+        y = size.height()
+        new_size = str(x)+","+str(y)
+        self.ui.DEVICE_SETTINGS_WINDOW_SIZE = new_size
+        self.ui.save()
+        print(new_size)
+
+        pass
+
+    def listAudioDevice(self):
+
+        try:
+            output = subprocess.check_output(['arecord', '-l'], stderr=subprocess.STDOUT, universal_newlines=True)
+            lines = output.split('\n')
+            
+            usb_device_count = 0
+            self.usb_device_list = []
+            
+            for line in lines:
+                if "USB Audio Device" in line:
+                    usb_device_count += 1
+                    device_name = line.strip().split(":")[-1].strip()
+                    self.usb_device_list.append(device_name)
+            
+            print(f"Total USB audio input devices detected: {usb_device_count}")
+            print("List of available USB audio input device names:")
+            # print("hhhh  ",self.usb_device_names)
+            # print(", ".join(self.usb_device_names))  # Join the names with commas and print them in one line
+
+            self.usb_audio_device_names = ",".join(self.usb_device_list)
+            self.lineEditAudioDevice.setText(self.usb_audio_device_names)
+
+        except subprocess.CalledProcessError as e:
+            print("Error:", e.output)
 
 
 
@@ -3780,7 +3896,39 @@ class Camera_Settings(base_17, form_17):
         self.comboBoxChangeAction()
         self.buttonClickActions()
         self.comboBoxClickActions()
-    
+
+        # try:
+        #     self.listAudioDevice()
+        # except:
+        #     print("Unable to detect Audio Devices")
+
+    def listAudioDevice(self):
+
+        try:
+            output = subprocess.check_output(['arecord', '-l'], stderr=subprocess.STDOUT, universal_newlines=True)
+            lines = output.split('\n')
+            
+            usb_device_count = 0
+            self.usb_device_list = []
+            
+            for line in lines:
+                if "USB Audio Device" in line:
+                    usb_device_count += 1
+                    device_name = line.strip().split(":")[-1].strip()
+                    self.usb_device_list.append(device_name)
+            
+            print(f"Total USB audio input devices detected: {usb_device_count}")
+            print("List of available USB audio input device names:")
+            # print("hhhh  ",self.usb_device_names)
+            # print(", ".join(self.usb_device_names))  # Join the names with commas and print them in one line
+
+            self.usb_audio_device_names = ",".join(self.usb_device_list)
+            self.lineEditAudioIn.setText(self.usb_audio_device_names)
+
+        except subprocess.CalledProcessError as e:
+            print("Error:", e.output)
+
+
     def comboBoxChangeAction(self):
         self.doubleSpinBoxExposure.valueChanged.connect(self.doubleSpinBoxExposureValueChanged)
         self.doubleSpinBoxSaturation.valueChanged.connect(self.doubleSpinBoxSaturationValueChanged)
@@ -4378,12 +4526,22 @@ class ExitConfirmWindow(base_16, form_16):
                 
 
     def shutdownAction(self):
-        subprocess.call(["echo {0} | sudo -S shutdown -h now".format("nvidia")], shell=True)
+        try:
+
+            subprocess.call(["echo {0} | sudo -S shutdown -h now".format(self.sys.password)], shell=True)
        
-        pass
+
+        except:
+            print("Unable to execute shutdown command")
+    
     def restartAction(self):
-        subprocess.call(["echo {0} | sudo -S reboot".format("nvidia")], shell=True)
-        pass
+
+        try:
+            subprocess.call(["echo {0} | sudo -S reboot".format(self.sys.password)], shell=True)
+        
+        except:
+
+            print(" Unable to Execute Reboot command")
 
     def closeAppAction(self):
 
@@ -4435,13 +4593,14 @@ if __name__=='__main__':
     screen_height = Main_Window_Geometry.height()
     screen_width = Main_Window_Geometry.width()
 
-    from controls.settings import Camera, System, CameraSettings, MotorPresets, AISettings, UI
+    from controls.settings import Camera, System, CameraSettings, MotorPresets, AISettings, UI, AudioSettings
     # from controls.remotecontrol import RemoteControler
 
     # new = System(screen_w=15)
     systemConfig = System()
     systemUI = UI(screen_w=screen_width)
     systemCamera = Camera()
+    audioConfig = AudioSettings()
 
     # x= int(screen_width/30)
     x = systemUI.ICON_SIZE

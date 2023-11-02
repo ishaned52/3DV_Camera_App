@@ -2,7 +2,7 @@ import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GLib
 from datetime import datetime
-from controls.settings import Camera, CameraSettings, System
+from controls.settings import Camera, CameraSettings, System, AudioSettings, StreamSettings
 import sys
 Gst.init(sys.argv)
 import numpy as np
@@ -29,6 +29,8 @@ class CameraStreamer:
         self.sys            = System()
         self.camSettings = CameraSettings()
         self.motors = MotorParameters()
+        self.audio = AudioSettings()
+        self.streamer = StreamSettings()
 
         self.apply_shader=apply_shader
 
@@ -275,7 +277,7 @@ class CameraStreamer:
         if self.apply_shader:
             source = f"{self.source_1}! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! queue2 ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)RGBA "
 
-        self.DEFAULT_PIPELINE   = f"{source} ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 "
+        self.DEFAULT_PIPELINE   = f"{source} ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 window-height=2160 window-width=3840"
         
         print(self.DEFAULT_PIPELINE)
 
@@ -302,7 +304,7 @@ class CameraStreamer:
         if self.apply_shader:
             source = f"{self.source_2}! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! queue ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)RGBA "
 
-        self.DEFAULT_PIPELINE   = f"{source} ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 "
+        self.DEFAULT_PIPELINE   = f"{source} ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 window-height=2160 window-width=3840"
         
         print(self.DEFAULT_PIPELINE)
 
@@ -353,7 +355,7 @@ class CameraStreamer:
                     nvcompositor name=comp 
                         sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
                         sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! queue2 ! tee name=t0
-                                t0. ! nv3dsink sync=false async=false
+                                t0. ! nvvidconv ! nv3dsink sync=false async=false window-height=2160 window-width=3840
                     {source_l} ! mqueue.sink_1 mqueue.src_1 ! comp.
                     {source_r} ! mqueue.sink_2 mqueue.src_2 ! comp.
                 """
@@ -625,7 +627,7 @@ class CameraStreamer:
                     nvcompositor name=comp
                         sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
                         sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! queue2 ! tee name=t0 
-                                t0. ! queue2 ! video/x-raw(memory:NVMM) ! nv3dsink sync=0 async=0 
+                                t0. ! queue2 ! video/x-raw(memory:NVMM) ! nv3dsink sync=0 async=0 window-height=2160 window-width=3840
                             t0. ! queue2 ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420
                             ! queue2 ! nvvidconv ! nvjpegenc ! rndbuffersize ! queue2 ! udpsink host={localhost} port=3001 sync=0 async=0
                     {source_l} ! comp.
@@ -712,8 +714,10 @@ class CameraStreamer:
 
 
     # STREAM RTMP
-    def stream_rtmp_4k(self, fps:int=30, streamService:str="medialive", bitrate:int=20000):
+    def stream_rtmp_4k(self, streamService:str="medialive", bitrate:int=20000):
 
+        fps = self.streamer.FPS_4K
+        print(fps)
         self.camSelected = "Stich"
         self.current_process = "streaming"
 
@@ -767,7 +771,7 @@ class CameraStreamer:
                     nvcompositor name=comp 
                         sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
                         sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! queue2 ! tee name=t0
-                                t0. ! nv3dsink sync=false async=false
+                                t0. ! nv3dsink sync=false async=false window-height=2160 window-width=3840
                                 t0. ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420 ! queue2 ! nvv4l2h264enc
                                                     bitrate={bitrate}
                                                     control-rate=1
@@ -789,7 +793,9 @@ class CameraStreamer:
 
 #Stream
     # Full Hd stream
-    def stream_rtmp(self, stream_key:str="key", set_hw:bool=False, quality:str="1080p", fps:int=30, stream_type:str="web"):
+    def stream_rtmp(self, stream_key:str="key", set_hw:bool=False, quality:str="1080p", stream_type:str="web"):
+
+        fps = self.streamer.FPS_FHD
 
         self.camSelected = "Stich"
         self.current_process = "streaming"
@@ -948,7 +954,7 @@ class CameraStreamer:
                     nvcompositor name=comp start-time-selection=1
                                     sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
                                     sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! tee name=t0 
-                    t0. ! queue2 ! nv3dsink sync=0 
+                    t0. ! queue2 ! nv3dsink sync=0 async=0 window-height=2160 window-width=3840
                     t0. ! queue2 ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)NV12 ! nvv4l2h264enc 
                             qos=true 
                             bitrate={self.cam.H264_REC_BITRATE}  
@@ -984,122 +990,138 @@ class CameraStreamer:
     # RECORD H265
     def record_h265(self, set_hw:bool=False, quality:str="2160p", file_type:str="mp4"):
         
-        fps = self.cam.FPS if self.cam.FPS <=30 else 30
+        try:
+
+            fps = self.cam.FPS if self.cam.FPS <=30 else 30
+            
+            self.camSelected = "Stich"
+
+            self.current_process = "recording_h265"
+
+            # audio_device = self.audio.AUDIO_INPUT_DEVICE
+            # audio_device = "USB Audio [USB Audio]"
+            audio_device = "USB Audio [USB Audio]"
+            # audio_device = "none"
+
+            if audio_device == "none":
+                device_name= ""
+            else:
+                device_name= f'audio_device={audio_device}'
+
+
+            if (quality=="720p"):
+                width      = 1296   #1280 + 16
+                height     =  732   #720  + 12
+
+                self.cam.CROP_WIDTH  += 8
+                self.cam.CROP_HEIGHT += 6
+
+                sensor_mode = 3
+                # fps         = 100
+
+            elif(quality=="1080p"):
+                width       = 1944   #1920 + 24
+                height      = 1096   #1080 + 16
+
+                self.cam.CROP_WIDTH  += 12
+                self.cam.CROP_HEIGHT += 8
+
+                sensor_mode = 2
+                # fps         = 70
+
+            else:
+                width       = 3840
+                height      = 2160
+
+                sensor_mode = 1
+                # fps         = 44
+
+            # fisheye:  FOVH-185, FOVV-130
+
+            # claculate cropping of the frames
+            left    = self.cam.CROP_WIDTH
+            right   = int(width - self.cam.CROP_WIDTH)
+            top     = self.cam.CROP_HEIGHT
+            bottom  = int(height - self.cam.CROP_HEIGHT)
+
+            comp_width = int((width - (self.cam.CROP_WIDTH)*2))
+            comp_height= int((height - (self.cam.CROP_HEIGHT)*2))
+            
+            # comp_width = comp_width if self.cam.h265_full_width or quality != "2160p" else int(comp_width/2)
+            comp_width = comp_width if self.cam.h265_full_width else int(comp_width/2)
+
+            source_l = f"{self.source_1} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw(memory:NVMM), format=(string)I420 "
+            if self.apply_shader:
+                source_l = f"{self.source_1} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)I420 "
+
+            source_r = f"{self.source_2} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw(memory:NVMM), format=(string)I420 "
+            if self.apply_shader:
+                source_r = f"{self.source_2} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)I420 "
+            
+            
+            rec_file_uri     = "{2}{4}{3}_{0}.{1}".format(str(datetime.now().strftime("%H%M%S")), file_type, str(self.RECORD_VIDEO_DROP_LOCATION.strip()),("HD" if quality.strip() == "720p" else ("FHD" if quality.strip() == "1080p" else "UHD")), "SH_" if self.apply_shader else "")
+
+            # select the muxing pattern
+            mux = None
+
+            if file_type == "mp4":
+                mux = "qtmux"
+            elif file_type == "mkv":
+                mux = "matroskamux"
+            elif file_type == "avi":
+                mux = "avimux"
+            else :
+                print("WARNING!: ", "System supports [mp4 | mkv] extensions only")
+
+            self.DEFAULT_PIPELINE = f""" 
+                        multiqueue name=mqueue sync-by-running-time=true use-buffering=true 
+                        nvcompositor name=comp 
+                                        sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
+                                        sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! tee name=t0 
+                        t0. ! queue2 ! nv3dsink sync=0 async=0 window-height=2160 window-width=3840
+                        t0. ! queue2 ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)NV12 ! nvv4l2h265enc 
+                                qos=true 
+                                bitrate={self.cam.H265_REC_BITRATE}  
+                                peak-bitrate=80000000 
+                                control-rate=0 
+                                maxperf-enable=true 
+                                profile=Main ! video/x-h265, stream-format=(string)byte-stream, alignment=(string)au ! h265parse ! {mux} name=mux ! queue2 ! filesink sync=0 qos=1 location={rec_file_uri} alsasrc do-timestamp=1 {device_name} ! audio/x-raw, format=S24_32LE, rate=48000 ! queue2 ! audioconvert ! audioresample ! queue2 ! voaacenc bitrate=128000 ! aacparse ! queue2 ! mux.
+                        {source_l} ! mqueue.sink_0 mqueue.src_0 ! comp.sink_0 
+                        {source_r} ! mqueue.sink_1 mqueue.src_1 ! comp.sink_1 
+                    """
+                                                                                                                                                                                                        #   device="hw:2,0"     device-name: "USB Audio [USB Audio]"       card-name: "Device [USB Audio Device]"
+            if self.sys.SINGLE_CAM_OPERATION:
+                self.DEFAULT_PIPELINE   = f"""
+                        multiqueue name=mqueue sync-by-running-time=true use-buffering=true 
+                        nvcompositor name=comp 
+                                        sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} ! tee name=t0 
+                        t0. ! queue2 ! nv3dsink sync=0 
+                        t0. ! queue2 ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)NV12 ! nvv4l2h265enc 
+                                qos=true 
+                                bitrate={self.cam.H265_REC_BITRATE}  
+                                peak-bitrate=80000000 
+                                control-rate=0 
+                                maxperf-enable=true 
+                                profile=Main ! video/x-h265, stream-format=(string)byte-stream, alignment=(string)au ! h265parse ! {mux} name=mux ! queue2 ! filesink sync=0 qos=1 location={rec_file_uri} alsasrc do-timestamp=1 ! audio/x-raw, format=S24_32LE, rate=48000 ! queue2 ! audioconvert ! audioresample ! queue2 ! voaacenc bitrate=128000 ! aacparse ! queue2 ! mux.
+                        {source_l} ! mqueue.sink_0 mqueue.src_0 ! comp.sink_0 
+                    """
+
+            print(self.DEFAULT_PIPELINE)
+            self.playPipeline()
+    
+        except:
         
-        self.camSelected = "Stich"
-
-        self.current_process = "recording_h265"
-
-        if (quality=="720p"):
-            width      = 1296   #1280 + 16
-            height     =  732   #720  + 12
-
-            self.cam.CROP_WIDTH  += 8
-            self.cam.CROP_HEIGHT += 6
-
-            sensor_mode = 3
-            # fps         = 100
-
-        elif(quality=="1080p"):
-            width       = 1944   #1920 + 24
-            height      = 1096   #1080 + 16
-
-            self.cam.CROP_WIDTH  += 12
-            self.cam.CROP_HEIGHT += 8
-
-            sensor_mode = 2
-            # fps         = 70
-
-        else:
-            width       = 3840
-            height      = 2160
-
-            sensor_mode = 1
-            # fps         = 44
-
-        # fisheye:  FOVH-185, FOVV-130
-
-        # claculate cropping of the frames
-        left    = self.cam.CROP_WIDTH
-        right   = int(width - self.cam.CROP_WIDTH)
-        top     = self.cam.CROP_HEIGHT
-        bottom  = int(height - self.cam.CROP_HEIGHT)
-
-        comp_width = int((width - (self.cam.CROP_WIDTH)*2))
-        comp_height= int((height - (self.cam.CROP_HEIGHT)*2))
-        
-        # comp_width = comp_width if self.cam.h265_full_width or quality != "2160p" else int(comp_width/2)
-        comp_width = comp_width if self.cam.h265_full_width else int(comp_width/2)
-
-        source_l = f"{self.source_1} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw(memory:NVMM), format=(string)I420 "
-        if self.apply_shader:
-            source_l = f"{self.source_1} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)I420 "
-
-        source_r = f"{self.source_2} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw(memory:NVMM), format=(string)I420 "
-        if self.apply_shader:
-            source_r = f"{self.source_2} sensor-mode={sensor_mode} ! video/x-raw(memory:NVMM), width=(int){width}, height=(int){height}, format=(string)NV12, framerate=(fraction){fps}/1 ! nvvidconv compute-hw=1 top={top} bottom={bottom} left={left} right={right} ! video/x-raw, format=(string)RGBA ! videobox left=-1 right=-1 top=-1 bottom=-1 ! glupload ! glshader fragment={self.fragment} ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)I420 "
-        
-        
-        rec_file_uri     = "{2}{4}{3}_{0}.{1}".format(str(datetime.now().strftime("%H%M%S")), file_type, str(self.RECORD_VIDEO_DROP_LOCATION.strip()),("HD" if quality.strip() == "720p" else ("FHD" if quality.strip() == "1080p" else "UHD")), "SH_" if self.apply_shader else "")
-
-        # select the muxing pattern
-        mux = None
-
-        if file_type == "mp4":
-            mux = "qtmux"
-        elif file_type == "mkv":
-            mux = "matroskamux"
-        elif file_type == "avi":
-            mux = "avimux"
-        else :
-            print("WARNING!: ", "System supports [mp4 | mkv] extensions only")
-
-        self.DEFAULT_PIPELINE = f""" 
-                    multiqueue name=mqueue sync-by-running-time=true use-buffering=true 
-                    nvcompositor name=comp 
-                                    sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} 
-                                    sink_1::interpolation-method={self.cam.INTERPOLATION} sink_1::xpos={comp_width} sink_1::ypos=0 sink_1::width={comp_width} sink_1::height={comp_height} ! tee name=t0 
-                    t0. ! queue2 ! nv3dsink sync=0 
-                    t0. ! queue2 ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)NV12 ! nvv4l2h265enc 
-                            qos=true 
-                            bitrate={self.cam.H265_REC_BITRATE}  
-                            peak-bitrate=80000000 
-                            control-rate=0 
-                            maxperf-enable=true 
-                            profile=Main ! video/x-h265, stream-format=(string)byte-stream, alignment=(string)au ! h265parse ! {mux} name=mux ! queue2 ! filesink sync=0 qos=1 location={rec_file_uri} alsasrc do-timestamp=1 ! audio/x-raw, format=S24_32LE, rate=48000 ! queue2 ! audioconvert ! audioresample ! queue2 ! voaacenc bitrate=128000 ! aacparse ! queue2 ! mux.
-                    {source_l} ! mqueue.sink_0 mqueue.src_0 ! comp.sink_0 
-                    {source_r} ! mqueue.sink_1 mqueue.src_1 ! comp.sink_1 
-                """
-
-        if self.sys.SINGLE_CAM_OPERATION:
-            self.DEFAULT_PIPELINE   = f"""
-                    multiqueue name=mqueue sync-by-running-time=true use-buffering=true 
-                    nvcompositor name=comp 
-                                    sink_0::interpolation-method={self.cam.INTERPOLATION} sink_0::xpos=0 sink_0::ypos=0 sink_0::width={comp_width} sink_0::height={comp_height} ! tee name=t0 
-                    t0. ! queue2 ! nv3dsink sync=0 
-                    t0. ! queue2 ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)NV12 ! nvv4l2h265enc 
-                            qos=true 
-                            bitrate={self.cam.H265_REC_BITRATE}  
-                            peak-bitrate=80000000 
-                            control-rate=0 
-                            maxperf-enable=true 
-                            profile=Main ! video/x-h265, stream-format=(string)byte-stream, alignment=(string)au ! h265parse ! {mux} name=mux ! queue2 ! filesink sync=0 qos=1 location={rec_file_uri} alsasrc do-timestamp=1 ! audio/x-raw, format=S24_32LE, rate=48000 ! queue2 ! audioconvert ! audioresample ! queue2 ! voaacenc bitrate=128000 ! aacparse ! queue2 ! mux.
-                    {source_l} ! mqueue.sink_0 mqueue.src_0 ! comp.sink_0 
-                """
-
-        print(self.DEFAULT_PIPELINE)
-        self.playPipeline()
-   
+            print(" Unable to Starrt Pipeline")
 
 
 
 
     def get_media_info(self, source_file:str):
         media_info_dict = {}
-        print("777777")
+
         print(source_file, "ffffffff")
         media_info = MediaInfo.parse(source_file.strip())
-        print("iiiiiiiii")
+
         # print(json.dumps(media_info.to_data()))
 
         for video_track in media_info.video_tracks:
@@ -1152,7 +1174,7 @@ class CameraStreamer:
                 {demux} ! queue ! h265parse ! nvv4l2decoder 
                 ! nvvidconv compute-hw=1 ! videobox top=-1 bottom=-1 left=-1 right=-1 ! glupload ! glshader fragment={self.fragment_double_frame} ! gldownload ! nvvidconv compute-hw=1 ! video/x-raw(memory:NVMM), format=(string)I420 
                 ! queue2 ! tee name=t0 
-                t0. ! queue2 ! nv3dsink sync=0 async=0 
+                t0. ! queue2 ! nv3dsink sync=0 async=0 window-height=2160 window-width=3840
                 t0. ! queue2 ! nvv4l2h265enc 
                                     bitrate={self.cam.H265_REC_BITRATE} 
                                     peak-bitrate={self.cam.H265_REC_BITRATE} 
@@ -1204,11 +1226,11 @@ class CameraStreamer:
 
         if(str(media_info['internet_media_type']).strip().upper() == "VIDEO/H265"):
             self.DEFAULT_PIPELINE = f"""
-                filesrc location={source_file_uri} ! {demuxer} ! queue ! h265parse ! nvv4l2decoder ! nvvidconv ! queue2 ! nvegltransform ! nveglglessink 
+                filesrc location={source_file_uri} ! {demuxer} ! queue ! h265parse ! nvv4l2decoder ! nvvidconv ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 window-height=2160 window-width=3840
             """
         elif(str(media_info['internet_media_type']).strip().upper() == "VIDEO/H264"):
             self.DEFAULT_PIPELINE = f"""
-                filesrc location={source_file_uri} ! {demuxer} ! queue ! h264parse ! nvv4l2decoder ! nvvidconv ! queue2 ! nvegltransform ! nveglglessink
+                filesrc location={source_file_uri} ! {demuxer} ! queue ! h264parse ! nvv4l2decoder ! nvvidconv ! queue2 ! nvegltransform ! nveglglessink sync=0 async=0 window-height=2160 window-width=3840
             """
         
         # print(self.DEFAULT_PIPELINE)
@@ -1243,7 +1265,7 @@ class CameraStreamer:
             self.loop.run()
     
         except:
-            print("LLLLLLLLLLLLLL")
+            print("Unable to Play the pipeline")
 
     def on_message(self, bus: Gst.Bus, message: Gst.Message, loop: GLib.MainLoop):
 
@@ -1319,9 +1341,6 @@ class CameraStreamer:
             if self.pipeline is not None:
                 self.pipeline.send_event(Gst.Event.new_eos())
                 # self.pipeline.set_state(Gst.State.PAUSED)
-
-
-
 
                 self.pipeline.set_state(Gst.State.NULL)
                 self.loop.quit()

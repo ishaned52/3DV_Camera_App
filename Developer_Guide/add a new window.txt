@@ -1,0 +1,3 @@
+add window size to ui.yaml
+
+go to controls.settings     class UI():     and update
