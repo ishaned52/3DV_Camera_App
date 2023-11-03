@@ -3125,20 +3125,32 @@ class DeviceSettingsPage(base_27, form_27):
         # Initialize ui and yaml files----------------------
         self.setupUi(self)
         self.sys = systemConfig
+        self.audio = audioConfig
         # self.vid = systemCamera
         self.ui = systemUI
+        self.muteCheckStat=False
         #---------------------------------------------------
 
         # Define Button actions--------
         self.pushButtonExitDeviceSettings.clicked.connect(self.exitAction)
         self.radioButtonSnapOn.clicked.connect(self.radioButtonClickedOn)
         self.radioButtonSnapOff.clicked.connect(self.radioButtonClickedOff)
+        self.pushButtonMute.clicked.connect(self.muteButtonClickAction)
         # ------------------------------
 
         # Enter calling functions here
         self.resizeWindow()
         self.listAudioDevice()
         self.checkSnapStartState()
+        self.listAvailableSongs()
+        self.muteStateCheck()
+        self.checkCurrentVolume()
+
+        self.horizontalSliderMicVolume.setMinimum(0)
+        self.horizontalSliderMicVolume.setMaximum(100)
+        
+        self.horizontalSliderMicVolume.valueChanged.connect(self.on_slider_value_changed)
+
 
     def radioButtonClickedOn(self):
 
@@ -3205,7 +3217,135 @@ class DeviceSettingsPage(base_27, form_27):
             print("Error:", e.output)
 
 
+    def listAvailableSongs(self):
 
+        try:
+                
+            import subprocess
+
+            # Run the pactl command
+            output = subprocess.check_output(["pactl", "list", "short", "sources"], text=True)
+
+            # Split the output by lines
+            lines = output.splitlines()
+
+            # Extract device names and store them in a list
+            # device_names = [line.split('\t')[1] for line in lines]
+
+            device_names = [line.split('\t')[1] for line in lines if 'input' in line]
+            # self.textBrowser.setPlainText(device_names)
+            self.textBrowser.setPlainText("\n".join(device_names))
+            # Print the device names
+            for device_name in device_names:
+                print(device_name)
+            
+        except:
+            print("Unable to list audio in devices")
+
+    def muteStateCheck(self):
+
+        try: 
+            # Define the source name you want to check
+            source_name = self.audio.SYSTEM_AUDIO_INPUT
+
+            # Run the pactl command and capture its output
+            output = subprocess.check_output(['pactl', 'list', 'sources'], text=True)
+
+            # Split the output into lines
+            lines = output.splitlines()
+
+            # Initialize a variable to store the mute status
+            mute_status = None
+
+            # Iterate through the lines to find the mute status
+            for i, line in enumerate(lines):
+                if source_name in line:
+                    for j in range(i, len(lines)):
+                        if 'Mute:' in lines[j]:
+                            mute_status = lines[j].split()[-1]
+                            break
+                    break
+
+            # Check and display the mute status
+            if mute_status is not None:
+                if mute_status == 'yes':
+                    self.muteCheckStat = True
+                    print(f"{source_name} is muted.")
+                    self.pushButtonMute.setChecked(True)
+                # elif mute_status == 'no':
+                #     print(f"{source_name} is unmuted.")
+            else:
+                print(f"{source_name} was not found.")
+
+        except:
+
+            print("Unable to check device State")
+
+
+    def checkCurrentVolume(self):
+
+        try:
+
+            source_name = self.audio.SYSTEM_AUDIO_INPUT
+
+            # Run the pactl command and capture its output
+            command = f"pactl list sources | grep -A 10 'Name: {source_name}' | grep 'Volume:' | awk -F/ '{{print $2}}' | awk '{{print $1}}' | head -n 1"
+            output = subprocess.check_output(command, shell=True, text=True)
+
+            # Extract the first volume percentage
+            self.volume_percentage = int(output.strip().replace('%', ''))
+            # self.volume_percentage = int(output.strip())
+
+            # print(f"Volume percentage for source '{source_name}': {volume_percentage}")
+
+            self.horizontalSliderMicVolume.setValue(self.volume_percentage)
+
+        except:
+            print("Unable to get volume ")
+
+
+    def on_slider_value_changed(self):
+
+        value = self.horizontalSliderMicVolume.value()
+        print(value)
+
+
+        source_name = self.audio.SYSTEM_AUDIO_INPUT
+        volume_percentage = str(str(value)+'%')
+
+
+        # Construct the pactl command
+        command = f'pactl set-source-volume {source_name} {volume_percentage}'
+
+        # Execute the command using subprocess
+        try:
+            subprocess.run(command, shell=True, check=True)
+            print(f'Set volume for source {source_name} to {volume_percentage}')
+        except subprocess.CalledProcessError as e:
+            print(f'Error: {e}')
+
+
+
+    def muteButtonClickAction(self):
+
+        self.muteCheckStat = not self.muteCheckStat
+        
+        if self.muteCheckStat==True:
+            self.pushButtonMute.setChecked(True)
+            state=1
+
+        else :
+            self.pushButtonMute.setChecked(False)
+            state=0
+
+        try:
+            print(state)
+            mute_command = ["pactl", "set-source-mute", self.audio.SYSTEM_AUDIO_INPUT, str(state)]
+            subprocess.run(mute_command)
+            print("Send Command Succesfully")
+            
+        except:
+            print("Unable to send mute command")
 
 class RigControlPage(base_10, form_10):
     def __init__(self, motors, pipeline):

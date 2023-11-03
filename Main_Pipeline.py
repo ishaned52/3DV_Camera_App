@@ -46,6 +46,7 @@ class CameraStreamer:
         self.fps = 30
         self.pipeline = None
         self.pipeline1 = None
+        self.pipeline_state = None
         self.bus = None
         self.loop = None
         self.halfwidth = int(self.width/2)
@@ -1279,16 +1280,17 @@ class CameraStreamer:
             self.pipeline.set_state(Gst.State.NULL)
             loop.quit()
 
-            self.pipeline = None
-            del self.pipeline
+            self.pipeline_state = None
 
-            
+            self.pipeline = None
+
+            del self.pipeline
 
 
         elif mtype == Gst.MessageType.ERROR:
 
             err, debug = message.parse_error()
-            print("ggggggggggggggggggggggggggg", err, debug)
+            print("", err, debug)
 
             self.pipeline.set_state(Gst.State.NULL)
 
@@ -1315,12 +1317,18 @@ class CameraStreamer:
         elif message.type == Gst.MessageType.STREAM_START:
             print("STREAM STARTED********************************************************")
 
-            subprocess.call(["echo {0} | sudo -S nvpmodel -m {1}".format((str)(self.sys.password).strip(), self.sys.POWER_MODE)], shell=True)
-            subprocess.call(["echo {0} | sudo -S jetson_clocks".format((str)(self.sys.password).strip())], shell=True)
-            time.sleep(2)
-            # self.streamStartedAction()
-            print("working")
+            # Commended these 3 lines  nov 03--------------
+            
+            #subprocess.call(["echo {0} | sudo -S nvpmodel -m {1}".format((str)(self.sys.password).strip(), self.sys.POWER_MODE)], shell=True)
+            #subprocess.call(["echo {0} | sudo -S jetson_clocks".format((str)(self.sys.password).strip())], shell=True)
+            #time.sleep(2)
+            
+            #-----------------------------------------------
 
+
+                        # self.streamStartedAction()
+
+            self.pipeline_state = True
 
             if self.current_process=='appsink':
                 
@@ -1351,7 +1359,8 @@ class CameraStreamer:
             self.loop = None
 
             del self.pipeline
-            
+
+
         
     def stop_recording(self):
         if hasattr(self, 'pipeline'):
